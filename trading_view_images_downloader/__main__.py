@@ -1,3 +1,4 @@
+import logging.config
 import logging
 import os
 
@@ -7,14 +8,14 @@ from lxml import html
 
 from trading_view_images_downloader.__version__ import __version__
 
-# TODO: Lucka change print() to logging.info() in all file
-
+# Constants
 __logo__ = """
 ---------------------------------------------------------------------
 trading-view-images-downloader {}
 ---------------------------------------------------------------------
 """.format(__version__)
 
+LOGGER_CONFIG_FILE_PATH = "logger.conf"
 
 def download_image_from_tw_url(url, file_path):
     with open(file_path, 'wb') as handle:
@@ -22,14 +23,13 @@ def download_image_from_tw_url(url, file_path):
         response = requests.get(pic_url, stream=True)
 
         if not response.ok:
-            print(response)
+            logging.info(response)
 
         for block in response.iter_content(1024):
             if not block:
                 break
 
             handle.write(block)
-
 
 def build_trade_id(asset, date, direction):
     date_array = date.split(".")
@@ -50,16 +50,18 @@ def parse_image_url_from_page(url):
     response = requests.get(url)
 
     if not response.ok:
-        print(response)
+        logging.info(response)
         raise Exception("Problem with parse image url from page")
 
     html_page = html.fromstring(response.text)
     return html_page.xpath("//img")[0].attrib["src"]
 
 
+
 if __name__ == "__main__":
     try:
-        print(__logo__)
+        logging.config.fileConfig(fname=LOGGER_CONFIG_FILE_PATH, disable_existing_loggers=False)
+        logging.info(__logo__)
 
         images = pd.read_csv("data/images.csv")
 
@@ -67,12 +69,12 @@ if __name__ == "__main__":
         if not os.path.exists(base_directory):
             os.mkdir(base_directory)
 
-        print("Start download trades images")
+        logging.info("Start download trades images")
         for index, image in images.iterrows():
             try:
                 trade_id = build_trade_id(image["Asset"], image["Date"], image["Direction"])
 
-                print("Process trade {}".format(trade_id))
+                logging.info("Process trade {}".format(trade_id))
                 final_path = base_directory + trade_id
 
                 if not os.path.exists(final_path):
@@ -83,6 +85,6 @@ if __name__ == "__main__":
                 download_image_from_tw_url(image["Control"], "{}/control.png".format(final_path))
             except:
                 logging.exception("Problem with processing trade - {} {}".format(image["Asset"], image["Date"]))
-        print("Finished download trades images")
+        logging.info("Finished download trades images")
     except:
         logging.exception("Some problem in application:")
