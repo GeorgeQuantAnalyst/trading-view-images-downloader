@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: trading-view-images-downloader
+Version: 1.0.0rc1
+Summary: Application for downloading images from Tradingview web url.
+Home-page: UNKNOWN
+License: MIT
+Keywords: Algo-trading,Tradingview
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+UNKNOWN
+
