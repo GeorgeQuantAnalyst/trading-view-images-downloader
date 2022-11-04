@@ -1,1 +1,9 @@
-# TODO: Lucka (all data folder and *.sh scripts)
+include requirements.txt
+include logger.conf
+include prepare.sh
+include build.sh
+include deploy.sh
+
+include data/*
+
+include run.sh
