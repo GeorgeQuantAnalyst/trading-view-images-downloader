@@ -82,22 +82,22 @@ if __name__ == "__main__":
                     os.mkdir(final_path)
 
                 logging.info("Processing picture in column Context")
-                if not pd.isna(image["Context"]):
+                if pd.notna(image["Context"]):
                     download_image_from_tw_url(image["Context"], "{}/context.png".format(final_path))
                 else:
                     logging.warning("An image for trade {} was not found in the Context column".format(trade_id))
                 logging.info("Processing picture in column Detail")
-                if not pd.isna(image["Detail"]):
+                if pd.notna(image["Detail"]):
                     download_image_from_tw_url(image["Detail"], "{}/detail.png".format(final_path))
                 else:
                     logging.warning("An image for trade {} was not found in the Detail column".format(trade_id))
                 logging.info("Processing picture in column Detail2")
-                if not pd.isna(image["Detail2"]):
+                if pd.notna(image["Detail2"]):
                     download_image_from_tw_url(image["Detail2"], "{}/detail2.png".format(final_path))
                 else:
                     logging.warning("An image for trade {} was not found in the Detail2 column".format(trade_id))
                 logging.info("Processing picture in column Control")
-                if not pd.isna(image["Control"]):
+                if pd.notna(image["Control"]):
                     download_image_from_tw_url(image["Control"], "{}/control.png".format(final_path))
                 else:
                     logging.warning("An image for trade {} was not found in the Control column".format(trade_id))
