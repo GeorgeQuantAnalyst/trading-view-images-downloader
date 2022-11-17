@@ -1,5 +1,5 @@
-import logging.config
 import logging
+import logging.config
 import os
 
 import pandas as pd
@@ -18,7 +18,11 @@ trading-view-images-downloader {}
 LOGGER_CONFIG_FILE_PATH = "logger.conf"
 
 
-def download_image_from_tw_url(url, file_path):
+def download_image_from_tw_url(url: str, file_path: str) -> None:
+    if pd.isna(url):
+        logging.warning("Invalid url [{}], image will not be download.".format(url))
+        return
+
     with open(file_path, 'wb') as handle:
         pic_url = parse_image_url_from_page(url)
         response = requests.get(pic_url, stream=True)
@@ -33,7 +37,7 @@ def download_image_from_tw_url(url, file_path):
             handle.write(block)
 
 
-def build_trade_id(asset, date, direction):
+def build_trade_id(asset: str, date: str, direction: str) -> str:
     date_array = date.split(".")
     day = date_array[0]
     month = date_array[1]
@@ -48,7 +52,7 @@ def build_trade_id(asset, date, direction):
     return "{}{}{}_{}_{}".format(year, month, day, asset, direction)
 
 
-def parse_image_url_from_page(url):
+def parse_image_url_from_page(url: str) -> str:
     response = requests.get(url)
 
     if not response.ok:
@@ -82,25 +86,16 @@ if __name__ == "__main__":
                     os.mkdir(final_path)
 
                 logging.info("Processing picture in column Context")
-                if pd.notna(image["Context"]):
-                    download_image_from_tw_url(image["Context"], "{}/context.png".format(final_path))
-                else:
-                    logging.warning("An image for trade {} was not found in the Context column".format(trade_id))
+                download_image_from_tw_url(image["Context"], "{}/context.png".format(final_path))
+
                 logging.info("Processing picture in column Detail")
-                if pd.notna(image["Detail"]):
-                    download_image_from_tw_url(image["Detail"], "{}/detail.png".format(final_path))
-                else:
-                    logging.warning("An image for trade {} was not found in the Detail column".format(trade_id))
+                download_image_from_tw_url(image["Detail"], "{}/detail.png".format(final_path))
+
                 logging.info("Processing picture in column Detail2")
-                if pd.notna(image["Detail2"]):
-                    download_image_from_tw_url(image["Detail2"], "{}/detail2.png".format(final_path))
-                else:
-                    logging.warning("An image for trade {} was not found in the Detail2 column".format(trade_id))
+                download_image_from_tw_url(image["Detail2"], "{}/detail2.png".format(final_path))
+
                 logging.info("Processing picture in column Control")
-                if pd.notna(image["Control"]):
-                    download_image_from_tw_url(image["Control"], "{}/control.png".format(final_path))
-                else:
-                    logging.warning("An image for trade {} was not found in the Control column".format(trade_id))
+                download_image_from_tw_url(image["Control"], "{}/control.png".format(final_path))
 
                 logging.info("Finished processing trade {}".format(trade_id))
 
