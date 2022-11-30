@@ -86,16 +86,16 @@ if __name__ == "__main__":
                     os.mkdir(final_path)
 
                 logging.info("Processing picture in column Context")
-                download_image_from_tw_url(image["Context"], "{}/context.png".format(final_path))
+                download_image_from_tw_url(image["Context"], "{}/{}_context.png".format(final_path, trade_id))
 
                 logging.info("Processing picture in column Detail")
-                download_image_from_tw_url(image["Detail"], "{}/detail.png".format(final_path))
+                download_image_from_tw_url(image["Detail"], "{}/{}_detail.png".format(final_path,trade_id))
 
                 logging.info("Processing picture in column Detail2")
-                download_image_from_tw_url(image["Detail2"], "{}/detail2.png".format(final_path))
+                download_image_from_tw_url(image["Detail2"], "{}/{}_detail2.png".format(final_path, trade_id))
 
                 logging.info("Processing picture in column Control")
-                download_image_from_tw_url(image["Control"], "{}/control.png".format(final_path))
+                download_image_from_tw_url(image["Control"], "{}/{}_control.png".format(final_path, trade_id))
 
                 logging.info("Finished processing trade {}".format(trade_id))
 
